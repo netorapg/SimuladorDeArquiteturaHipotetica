@@ -79,6 +79,25 @@ int main() {
     instr.dest = 3;
     memory[2] = instr;
 
+    memory[20].type = 6;
+    memory[21].type = 7;
+
+    instr.type = LOAD;
+    instr.op1 = 20;
+    instr.dest = 4;
+    memory[3] = instr;
+
+    instr.type = LOAD;
+    instr.op1 = 21;
+    instr.dest = 5;
+    memory[4] = instr;
+
+    instr.type = ADD;
+    instr.op1 = 4;
+    instr.op2 = 5;
+    instr.dest = 6;
+    memory[5] = instr;
+
 
     // Loop de execução até encontrar instrução HALT
     int PC = 0;
@@ -93,6 +112,7 @@ int main() {
 
     printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
 
+    printf ("Resutado da soma: R6 = %d\n", registers[6]);
     return 0;
 
 }
