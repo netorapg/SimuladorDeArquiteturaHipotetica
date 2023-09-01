@@ -56,23 +56,39 @@ int main() {
     for (int i = 0; i < MEM_SIZE; i++) memory[i] = 0;
     for (int i = 0; i < REG_SIZE; i++) registers[i] = 0;
 
+    printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
+
+    // Instrução 1: LOAD valor da memória[10 em R1
+    instr.type = LOAD;
+    instr.op1 = 10;
+    instr.dest = 1;
+
+    // Instrução 2: LOAD valor da memória[11] em R2
+    instr.type = LOAD;
+    instr.op1 = 11;
+    instr.dest = 2;
+    memory[4] = *(int*)&instr;// como cada instrução tem 16 bytes, a próxima instrução começará em memory[4]
+
     // Exemplo: instrução para adicionar conteúdo de R1 e R2 e armazenar em R3
     instr.type = ADD;
     instr.op1 = 1;
     instr.op2 = 2;
     instr.dest = 3;
-    memory[0] = *(int*)&instr;
+    memory[8] = *(int*)&instr;
 
-    printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
 
     // Loop de execução até encontrar instrução HALT
     int PC = 0;
     do {
         fetch(PC);
         execute();
+        
+        printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
+        
         PC += sizeof(Instruction);
     }while (instr.type != HALT);
 
+    
     return 0;
 
 }
