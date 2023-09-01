@@ -35,7 +35,7 @@ void execute() {
             registers[instr.dest] = registers[instr.op1] + registers[instr.op2];
             break;
         case SUB:
-            registers[instr.dest] = registers[instr.op1] = registers[instr.op2];
+            registers[instr.dest] = registers[instr.op1] - registers[instr.op2];
             break;
         case LOAD:
             registers[instr.dest] = memory[instr.op1];
@@ -54,7 +54,7 @@ void execute() {
 int main() {
     // Inicializando a memória e os registradores
     for (int i = 0; i < MEM_SIZE; i++) memory[i] = 0;
-    for (int i = 0; REG_SIZE; i++) registers[i] = 0;
+    for (int i = 0; i < REG_SIZE; i++) registers[i] = 0;
 
     // Exemplo: instrução para adicionar conteúdo de R1 e R2 e armazenar em R3
     instr.type = ADD;
@@ -62,6 +62,8 @@ int main() {
     instr.op2 = 2;
     instr.dest = 3;
     memory[0] = *(int*)&instr;
+
+    printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
 
     // Loop de execução até encontrar instrução HALT
     int PC = 0;
