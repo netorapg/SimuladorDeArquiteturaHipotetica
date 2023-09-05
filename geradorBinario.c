@@ -6,8 +6,7 @@ typedef enum {
     ADD,
     SUB,
     LOAD,
-    STORE,
-    HALT
+    STORE
 } InstructionType;
 
 typedef struct {
@@ -30,7 +29,7 @@ int main() {
         {LOAD, 10, 0, 1},
         {LOAD, 11, 0, 2},
         {ADD, 1, 2, 3},
-        {HALT, 0, 0, 0},  // Instrução HALT para encerrar a execução
+        // Adicione mais instruções aqui, se necessário
     };
 
     // Escrever as instruções no arquivo
