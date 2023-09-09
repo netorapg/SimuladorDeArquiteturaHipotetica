@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #define MEM_SIZE 256
-#define REG_SIZE 8
+#define REG_SIZE 13
 
 typedef enum {
     ADD,
@@ -55,9 +55,9 @@ int main() {
     for (int i = 0; i < REG_SIZE; i++) {
         registers[i] = 0;
     }
+   // registers[8] = 0;
 
-    printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7]);
-
+  printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d, R9: %d, R10: %d, R11: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11]);
 /*  // Instrução 1: LOAD valor da memória[10 em R1
     instr.type = LOAD;
     instr.op1 = 10;
@@ -97,20 +97,40 @@ int main() {
     instr.dest = 6;
     memory[5] = instr;
 
+    memory[22].type = 18;
+    memory[23].type = 9;
+
+    instr.type = LOAD;
+    instr.op1 = 22;
+    instr.dest = 7;
+    memory[6] = instr;
+
+    instr.type = LOAD;
+    instr.op1 = 23;
+    instr.dest = 8;
+    memory[7] = instr;
+
+    instr.type = SUB;
+    instr.op1 = 7;
+    instr.op2 = 8;
+    instr.dest = 9;
+    memory[8] = instr;
+
     // Loop de execução até o final da memória
     int PC = 0;
     while (PC < MEM_SIZE) {
         fetch(PC);
         execute();
         
-      // printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7]);
-        
+       // printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d, R9: %d, R10: %d, R11: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11]);
+    
         PC++;
     }
 
-    printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7]);
+    printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d, R9: %d, R10: %d, R11: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11]);
 
 
     printf("Resultado da soma: R6 = %d\n", registers[6]);
+    printf("Resultado da subtração: R9 = %d\n", registers[9]);
     return 0;
 }
