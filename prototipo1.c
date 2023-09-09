@@ -1,13 +1,13 @@
 #include <stdio.h>
 
 #define MEM_SIZE 256
+#define REG_SIZE 8
 
 typedef enum {
     ADD,
     SUB,
     LOAD,
-    STORE,
-    HALT
+    STORE
 } InstructionType;
 
 typedef struct {
@@ -17,29 +17,75 @@ typedef struct {
     int dest;
 } Instruction;
 
+Instruction memory[MEM_SIZE];
+int registers[REG_SIZE];
+Instruction instr;
+
+// Função para buscar a instrução na memória
+void fetch(int PC) {
+    instr = memory[PC];
+}
+
+// Função para decodificar e executar a instrução
+void execute() {
+    switch (instr.type) {
+        case ADD:
+            registers[instr.dest] = registers[instr.op1] + registers[instr.op2];
+            break;
+        case SUB:
+            registers[instr.dest] = registers[instr.op1] - registers[instr.op2];
+            break;
+        case LOAD:
+            registers[instr.dest] = memory[instr.op1].type;
+            break;
+        case STORE:
+            memory[instr.op1].type = registers[instr.dest];
+            break;
+        default:
+            printf("Instrução inválida\n");
+            break;
+    }
+}
+
 int main() {
-    // Abrir o arquivo binário para escrita
-    FILE *file = fopen("instrucoes.bin", "wb");
+    // Inicializando a memória e os registradores
+    for (int i = 0; i < MEM_SIZE; i++) {
+        memory[i].type = -1;  // Usando -1 para representar instruções inválidas
+    }
+    for (int i = 0; i < REG_SIZE; i++) {
+        registers[i] = 0;
+    }
+
+    // Abrir o arquivo binário de instruções para leitura
+    FILE *file = fopen("instrucoes.bin", "rb");
     if (file == NULL) {
-        perror("Erro ao criar o arquivo de instruções");
+        perror("Erro ao abrir o arquivo de instruções");
         return 1;
     }
 
-    // Definir as instruções e escrevê-las no arquivo binário
-    Instruction instructions[] = {
-        {LOAD, 10, 0, 1},
-        {LOAD, 11, 0, 2},
-        {ADD, 1, 2, 3},
-        {HALT, 0, 0, 0},  // Instrução HALT para encerrar a execução
-    };
+    // Lê as instruções do arquivo binário e carrega na memória
+    int instructionCount = 0;
+    while (fread(&memory[instructionCount], sizeof(Instruction), 1, file) == 1) {
+        instructionCount++;
+    }
 
-    // Escrever as instruções no arquivo
-    fwrite(instructions, sizeof(Instruction), sizeof(instructions) / sizeof(Instruction), file);
-
-    // Fechar o arquivo
+    // Fecha o arquivo após a leitura
     fclose(file);
 
-    printf("Arquivo de instruções 'instrucoes.bin' criado com sucesso.\n");
+    // Loop de execução até o final do arquivo
+    int PC = 0;
+    while (memory[PC].type != -1) {
+        fetch(PC);
+        execute();
+
+        PC++;
+    }
+
+    // Imprime o estado final dos registradores
+    printf("Estado final dos registradores:\n");
+    for (int i = 0; i < REG_SIZE; i++) {
+        printf("R%d: %d\n", i, registers[i]);
+    }
 
     return 0;
 }

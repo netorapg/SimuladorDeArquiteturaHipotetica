@@ -1,4 +1,3 @@
-//Simulador simples em C para uma arquitetura monociclo
 #include <stdio.h>
 
 #define MEM_SIZE 256
@@ -8,8 +7,7 @@ typedef enum {
     ADD,
     SUB,
     LOAD,
-    STORE,
-    HALT
+    STORE
 } InstructionType;
 
 typedef struct {
@@ -23,11 +21,9 @@ Instruction memory[MEM_SIZE];
 int registers[REG_SIZE];
 Instruction instr;
 
-
-
-// Função para buscar a instrução n memória
+// Função para buscar a instrução na memória
 void fetch(int PC) {
-    instr = *(Instruction*)&memory[PC];
+    instr = memory[PC];
 }
 
 // Função para decodificar e executar a instrução
@@ -45,8 +41,6 @@ void execute() {
         case STORE:
             memory[instr.op1].type = registers[instr.dest];
             break;
-        case HALT:
-            break;
         default:
             printf("Instrução inválida\n");
             break;
@@ -55,8 +49,12 @@ void execute() {
 
 int main() {
     // Inicializando a memória e os registradores
-    for (int i = 0; i < MEM_SIZE; i++) memory[i].type = HALT;
-    for (int i = 0; i < REG_SIZE; i++) registers[i] = 0;
+    for (int i = 0; i < MEM_SIZE; i++) {
+        memory[i].type = LOAD;  // Inicializa com a instrução LOAD em vez de HALT
+    }
+    for (int i = 0; i < REG_SIZE; i++) {
+        registers[i] = 0;
+    }
 
     printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
 
@@ -98,22 +96,19 @@ int main() {
     instr.dest = 6;
     memory[5] = instr;
 
-
-    // Loop de execução até encontrar instrução HALT
+    // Loop de execução até o final da memória (não há HALT)
     int PC = 0;
-    do {
+    while (PC < MEM_SIZE) {
         fetch(PC);
-        execute(instr);
+        execute();
         
-        printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
+       printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
         
         PC++;
-    }while (instr.type != HALT);
+    }
 
     printf("RO: %d, R1: %d, R2: %d, R3: %d\n", registers[0], registers[1], registers[2], registers[3]);
 
-    printf ("Resutado da soma: R6 = %d\n", registers[6]);
+    printf("Resultado da soma: R6 = %d\n", registers[6]);
     return 0;
-
 }
-
