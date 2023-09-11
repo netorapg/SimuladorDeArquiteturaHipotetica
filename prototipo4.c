@@ -20,10 +20,10 @@ typedef struct Instruction {
 } Instruction;
 
 uint16_t memory[MEM_SIZE];
-int registers[REG_SIZE];
+uint16_t registers[REG_SIZE];
 
 
-int fetch(int PC, Instruction* instr) {
+uint16_t fetch(int PC, Instruction* instr) {
     if (PC < 0 || PC >= MEM_SIZE) {
         return 0;
     }
@@ -65,6 +65,7 @@ void initialize() {
     memory[1] = ((LOAD << 12) | (21 << 8) | 5);
     memory[2] = ((ADD << 12) | 4 | (5 << 4) | 6);
     memory[3] = ((SUB << 12) | 7 | (8 << 4) | 9);
+    
 }
 
 int main() {
