@@ -7,7 +7,7 @@ typedef enum {
     ADD,
     SUB,
     LOAD,
-    STORE
+  //  STORE
 } InstructionType;
 
 typedef struct {
@@ -38,9 +38,9 @@ void execute() {
         case LOAD:
             registers[instr.dest] = memory[instr.op1].type;
             break;
-        case STORE:
-            memory[instr.op1].type = registers[instr.dest];
-            break;
+      //  case STORE:
+           // memory[instr.op1].type = registers[instr.dest];
+           // break;
         default:
             printf("Instrução inválida\n");
             break;
@@ -128,7 +128,6 @@ int main() {
     }
 
     printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d, R9: %d, R10: %d, R11: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11]);
-
 
     printf("Resultado da soma: R6 = %d\n", registers[6]);
     printf("Resultado da subtração: R9 = %d\n", registers[9]);

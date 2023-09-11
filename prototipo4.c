@@ -1,17 +1,18 @@
 #include <stdio.h>
 #include <stdint.h>
 
+
 #define MEM_SIZE 256
 #define REG_SIZE 13
 
 typedef enum {
-    ADD,
-    SUB,
-    LOAD,
-    STORE
+    ADD = 0,
+    SUB = 1,
+    LOAD = 2,
+    STORE = 3
 } InstructionType;
 
-typedef struct {
+typedef struct Instruction {
     InstructionType type;
     int op1;
     int op2;
@@ -20,40 +21,35 @@ typedef struct {
 
 uint16_t memory[MEM_SIZE];
 int registers[REG_SIZE];
-Instruction instr;
 
-// Função para buscar a instrução na memória
-int fetch(int PC) {
+
+int fetch(int PC, Instruction* instr) {
     if (PC < 0 || PC >= MEM_SIZE) {
-        return 0; // Verifica se PC está dentro dos limites da memória
+        return 0;
     }
-    instr = *(Instruction*)&memory[PC];
+    *instr = *(Instruction*)&memory[PC];
     return 1;
 }
 
-// Função para decodificar e executar a instrução
-void execute() {
-    switch (instr.type) {
-        case ADD:
-            registers[instr.dest] = registers[instr.op1] + registers[instr.op2];
-            break;
-        case SUB:
-            registers[instr.dest] = registers[instr.op1] - registers[instr.op2];
-            break;
-        case LOAD:
-            registers[instr.dest] = memory[instr.op1];
-            break;
-        case STORE:
-            memory[instr.op1] = registers[instr.dest];
-            break;
-        default:
-            printf("Instrução inválida\n");
-            break;
-    }
+// Funções para executar instruções
+void executeAdd(Instruction instr) {
+    registers[instr.dest] = registers[instr.op1] + registers[instr.op2];
 }
 
-int main() {
-    // Inicializando a memória e os registradores
+void executeSub(Instruction instr) {
+    registers[instr.dest] = registers[instr.op1] - registers[instr.op2];
+}
+
+void executeLoad (Instruction instr) {
+    registers[instr.dest] = memory[registers[instr.op1]];
+}
+
+void executeStore(Instruction instr) {
+    memory[registers[instr.op1]] = registers[instr.dest];
+}
+
+// Função para inicialização
+void initialize() {
     for (int i = 0; i < MEM_SIZE; i++) {
         memory[i] = 0;
     }
@@ -61,56 +57,48 @@ int main() {
         registers[i] = 0;
     }
 
-    printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d, R9: %d, R10: %d, R11: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11]);
+    // Define valores nos registradores para demonstração
+    registers[20] = 6;
+    registers[21] = 7;
 
-    // Define valores em posições específicas da memória para demonstração
-    memory[20] = 6;
-    memory[21] = 7;
+    memory[0] = ((LOAD << 12) | (20 << 8) | 4);
+    memory[1] = ((LOAD << 12) | (21 << 8) | 5);
+    memory[2] = ((ADD << 12) | 4 | (5 << 4) | 6);
+    memory[3] = ((SUB << 12) | 7 | (8 << 4) | 9);
+}
 
-    Instruction temp;
-
-    temp.type = LOAD;
-    temp.op1 = 20;
-    temp.dest = 4;
-    memory[3] = *(uint16_t*)&temp;
-
-    temp.type = LOAD;
-    temp.op1 = 21;
-    temp.dest = 5;
-    memory[4] = *(uint16_t*)&temp;
-
-    temp.type = ADD;
-    temp.op1 = 4;
-    temp.op2 = 5;
-    temp.dest = 6;
-    memory[5] = *(uint16_t*)&temp;
-
-    memory[22] = 18;
-    memory[23] = 9;
-
-    temp.type = LOAD;
-    temp.op1 = 22;
-    temp.dest = 7;
-    memory[6] = *(uint16_t*)&temp;
-
-    temp.type = LOAD;
-    temp.op1 = 23;
-    temp.dest = 8;
-    memory[7] = *(uint16_t*)&temp;
-
-    temp.type = SUB;
-    temp.op1 = 7;
-    temp.op2 = 8;
-    temp.dest = 9;
-    memory[8] = *(uint16_t*)&temp;
+int main() {
+    // Inicialize a memória e os registradores
+    initialize();
 
     // Loop de execução até o final da memória
     int PC = 0;
-    while (fetch(PC)) {
-        execute();
-        
-        printf("RO: %d, R1: %d, R2: %d, R3: %d, R4: %d, R5: %d, R6: %d, R7: %d, R8: %d, R9: %d, R10: %d, R11: %d\n", registers[0], registers[1], registers[2], registers[3], registers[4], registers[5], registers[6], registers[7], registers[8], registers[9], registers[10], registers[11]);
-        
+    Instruction instr;
+    while (fetch(PC, &instr)) {
+        switch (instr.type) {
+            case ADD:
+                executeAdd(instr);
+                break;
+            case SUB:
+                executeSub(instr);
+                break;
+            case LOAD:
+                executeLoad(instr);
+                break;
+            case STORE:
+                executeStore(instr);
+                break;
+            default:
+                printf("Instrução não reconhecida\n");
+                break;
+        }
+
+        printf("Registradores: ");
+        for (int i = 0; i < REG_SIZE; i++) {
+            printf("R%d: %d ", i, registers[i]);
+        }
+        printf("\n");
+
         PC++;
     }
 
