@@ -1,1 +1,1 @@
-# EmuladorDeArquiteturaHipotetica
+# SimuladorDeArquiteturaHipotetica
