@@ -26,6 +26,24 @@ uint16_t divi(uint16_t a, uint16_t b){ // Instrução de divisão
 	return a/b;
 }
 
+uint16_t cmp_equal(uint16_t a, uint16_t b){ // Instrução de comparação igual
+    if(a == b){
+        return 1;
+    }
+    return 0;
+}
+
+uint16_t cmp_neq(uint16_t a, uint16_t b){ // Instrução de comparação diferente
+    if(a != b){
+        return 1;
+    }
+    return 0;
+}
+
+uint16_t load(uint16_t a){ // Instrução de load
+    return memoria[a];
+}
+
 void printarRegistradores(){ // Printa os registradores
 	for(int i = 0; i < 8; i++){
 		printf(" r%d: %d", i, registradores[i]);
@@ -42,7 +60,7 @@ int main ()
     // Os próximos 3 bits representam o operador 1
     // Os próximos 3 bits representam o operador 2
 	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
-	memoria[0]= 0b0000011101110010; // Aqui aidicionamos o número binário da instrução na memória
+	memoria[0]= 0b0001111111010; // Aqui aidicionamos o número binário da instrução na memória
     // Inicializando os registradores
 	registradores[0] = 0; 
 	registradores[1] = 1;
@@ -79,6 +97,15 @@ int main ()
 		case 3:
 		registradores[destino] = divi(registradores[operador1], registradores[operador2]);
 		break;
+        case 4:
+        registradores[destino] = cmp_equal(registradores[operador1], registradores[operador2]);
+        break;
+        case 5:
+        registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
+        break;
+        case 6:
+        registradores[destino] = load(registradores[operador1]);
+        break;
 		default:
 		printf("Erro");
 		break;
