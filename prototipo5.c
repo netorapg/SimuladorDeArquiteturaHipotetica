@@ -33,15 +33,9 @@ void printarRegistradores(){
 }
 
 
-int main (int argc, char **argv)
+int main ()
 {
-	/*if (argc != 2) {
-		printf("usage: %s [bin_name]\n", argv[0]);
-		exit(1);
-	}*/
-	
-
-	// Exemplo de extração de bits
+    // Exemplo de extração de bits
 	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
 	memoria[0]= 0b000001111111010;
 	registradores[0] = 0;
