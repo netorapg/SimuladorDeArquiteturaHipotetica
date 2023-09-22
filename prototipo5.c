@@ -5,6 +5,10 @@
 
 #include "lib.h" // Biblioteca usada para extração de bits
 
+//COISAS PARA FAZER
+//Tire tudo do main, deixe o código mais modular
+// Deixe uma instrução armazenada para cada memória
+
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
 
@@ -40,13 +44,17 @@ uint16_t cmp_neq(uint16_t a, uint16_t b){ // Instrução de comparação diferen
     return 0;
 }
 
+uint16_t mov(uint16_t a, uint16_t b){ // Instrução de movimentação
+	return a;
+}
+
 uint16_t load(uint16_t a){ // Instrução de load
     return memoria[a];
 }
 
 void printarRegistradores(){ // Printa os registradores
 	for(int i = 0; i < 8; i++){
-		printf(" r%d: %d", i, registradores[i]);
+		printf(" r%d: %d \n", i, registradores[i]);
 	}
 }
 
@@ -60,7 +68,12 @@ int main ()
     // Os próximos 3 bits representam o operador 1
     // Os próximos 3 bits representam o operador 2
 	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
-	memoria[0]= 0b0001111111010; // Aqui aidicionamos o número binário da instrução na memória
+	//
+	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
+	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
+	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
+	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
+; // Aqui aidicionamos o número binário da instrução na memória
     // Inicializando os registradores
 	registradores[0] = 0; 
 	registradores[1] = 1;
@@ -72,15 +85,15 @@ int main ()
 	registradores[7] = 7;
 
 
-	uint16_t formato = extract_bits(memoria[0], 15, 1); // Extrai o bit de formato da instrução
+	uint16_t formato = extract_bits(memoria[3], 15, 1); // Extrai o bit de formato da instrução
 
-	uint16_t opcode = extract_bits(memoria[0], 9, 6); // Extrai o opcode da instrução
+	uint16_t opcode = extract_bits(memoria[3], 9, 6); // Extrai o opcode da instrução
 	
-	uint16_t destino = extract_bits(memoria[0], 6, 3); // Extrai o destino da instrução
+	uint16_t destino = extract_bits(memoria[3], 6, 3); // Extrai o destino da instrução
 
-	uint16_t operador1 = extract_bits(memoria[0], 3, 3); // Extrai o operador 1 da instrução
+	uint16_t operador1 = extract_bits(memoria[3], 3, 3); // Extrai o operador 1 da instrução
 
-	uint16_t operador2 = extract_bits(memoria[0], 0, 3); // Extrai o operador 2 da instrução
+	uint16_t operador2 = extract_bits(memoria[3], 0, 3); // Extrai o operador 2 da instrução
 
 
 
