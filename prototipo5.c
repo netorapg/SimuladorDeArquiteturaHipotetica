@@ -58,7 +58,23 @@ void printarRegistradores(){ // Printa os registradores
 	}
 }
 
+/*void preencheRegistradores(){
+	for(int i = 0; i < 8; i++){
+		registradores[i] = 0;
+	}
+}*/
 
+
+void inicializandoRegistradores(){
+	registradores[0] = 0; 
+	registradores[1] = 1;
+	registradores[2] = 2;
+	registradores[3] = 3;
+	registradores[4] = 4;
+	registradores[5] = 5;
+	registradores[6] = 6;
+	registradores[7] = 7;
+}
 
 void executarInstrucao() {
 	uint16_t formato = extract_bits(memoria[3], 15, 1); // Extrai o bit de formato da instrução
@@ -115,7 +131,7 @@ int main ()
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
 ; // Aqui aidicionamos o número binário da instrução na memória
-    // Inicializando os registradores
+/*// Inicializando os registradores
 	registradores[0] = 0; 
 	registradores[1] = 1;
 	registradores[2] = 2;
@@ -123,8 +139,10 @@ int main ()
 	registradores[4] = 4;
 	registradores[5] = 5;
 	registradores[6] = 6;
-	registradores[7] = 7;
-
+	registradores[7] = 7;*/
+    
+//	preencheRegistradores();
+	inicializandoRegistradores();
 	executarInstrucao();
 
 	printarRegistradores();
