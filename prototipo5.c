@@ -96,15 +96,17 @@ void inicializandoRegistradores(){
 
 
 void executarInstrucao() {
-	uint16_t formato = extract_bits(memoria[3], 15, 1); // Extrai o bit de formato da instrução
 
-	uint16_t opcode = extract_bits(memoria[3], 9, 6); // Extrai o opcode da instrução
+	uint16_t instrucao = memoria[3]; // Pega a instrução na memória
+	uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução
+
+	uint16_t opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
 	
-	uint16_t destino = extract_bits(memoria[3], 6, 3); // Extrai o destino da instrução
+	uint16_t destino = extract_bits(instrucao, 6, 3); // Extrai o destino da instrução
 
-	uint16_t operador1 = extract_bits(memoria[3], 3, 3); // Extrai o operador 1 da instrução
+	uint16_t operador1 = extract_bits(instrucao, 3, 3); // Extrai o operador 1 da instrução
 
-	uint16_t operador2 = extract_bits(memoria[3], 0, 3); // Extrai o operador 2 da instrução
+	uint16_t operador2 = extract_bits(instrucao, 0, 3); // Extrai o operador 2 da instrução
 
 switch (opcode) { // Executa a instrução de acordo com o opcode
 		case 0:
