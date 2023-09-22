@@ -64,7 +64,15 @@ void printarRegistradores(){ // Printa os registradores
 	}
 }*/
 
-
+// Aqui adicionamos o número binário da instrução na memória
+ // Exemplo de extração de bits
+    // O primeiro bit é o bit representa o formato
+    // Os próximos 6 bits representam o opcode
+    // Os próximos 3 bits representam o destino
+    // Os próximos 3 bits representam o operador 1
+    // Os próximos 3 bits representam o operador 2
+	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
+	//
 void instrucoesNaMemoria(){
 	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
@@ -72,6 +80,7 @@ void instrucoesNaMemoria(){
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
 }
 
+// Aqui inicializamos os registradores
 void inicializandoRegistradores(){
 	registradores[0] = 0; 
 	registradores[1] = 1;
@@ -82,6 +91,7 @@ void inicializandoRegistradores(){
 	registradores[6] = 6;
 	registradores[7] = 7;
 }
+
 
 void executarInstrucao() {
 	uint16_t formato = extract_bits(memoria[3], 15, 1); // Extrai o bit de formato da instrução
@@ -125,36 +135,9 @@ switch (opcode) { // Executa a instrução de acordo com o opcode
 
 int main ()
 {
-    // Exemplo de extração de bits
-    // O primeiro bit é o bit representa o formato
-    // Os próximos 6 bits representam o opcode
-    // Os próximos 3 bits representam o destino
-    // Os próximos 3 bits representam o operador 1
-    // Os próximos 3 bits representam o operador 2
-	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
-	//
-	/*memoria[0] = 0b0000000101101101; // Add r5, r5, r5
-	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
-	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
-	memoria[3] = 0b0000011100101101;// Div r4, r5, r5*/
-	
-; // Aqui aidicionamos o número binário da instrução na memória
-/*// Inicializando os registradores
-	registradores[0] = 0; 
-	registradores[1] = 1;
-	registradores[2] = 2;
-	registradores[3] = 3;
-	registradores[4] = 4;
-	registradores[5] = 5;
-	registradores[6] = 6;
-	registradores[7] = 7;*/
-    
-//	preencheRegistradores();
 	instrucoesNaMemoria();
 	inicializandoRegistradores();
 	executarInstrucao();
-
 	printarRegistradores();
-
 	return 0;
 }
