@@ -125,6 +125,7 @@ int main ()
 	registradores[6] = 6;
 	registradores[7] = 7;
 
+	executarInstrucao();
 
 	printarRegistradores();
 
