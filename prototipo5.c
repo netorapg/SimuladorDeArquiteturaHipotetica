@@ -65,6 +65,13 @@ void printarRegistradores(){ // Printa os registradores
 }*/
 
 
+void instrucoesNaMemoria(){
+	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
+	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
+	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
+	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
+}
+
 void inicializandoRegistradores(){
 	registradores[0] = 0; 
 	registradores[1] = 1;
@@ -126,10 +133,11 @@ int main ()
     // Os próximos 3 bits representam o operador 2
 	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
 	//
-	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
+	/*memoria[0] = 0b0000000101101101; // Add r5, r5, r5
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
-	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
+	memoria[3] = 0b0000011100101101;// Div r4, r5, r5*/
+	
 ; // Aqui aidicionamos o número binário da instrução na memória
 /*// Inicializando os registradores
 	registradores[0] = 0; 
@@ -142,6 +150,7 @@ int main ()
 	registradores[7] = 7;*/
     
 //	preencheRegistradores();
+	instrucoesNaMemoria();
 	inicializandoRegistradores();
 	executarInstrucao();
 
