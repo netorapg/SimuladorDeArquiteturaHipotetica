@@ -8,6 +8,8 @@
 //COISAS PARA FAZER
 //Tire tudo do main, deixe o código mais modular
 // Deixe uma instrução armazenada para cada memória
+/*Faça com que você não precise definir manualmente a memoria[] toda vez que 
+for testar uma instrução*/
 
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
