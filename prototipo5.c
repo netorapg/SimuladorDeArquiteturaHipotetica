@@ -64,7 +64,7 @@ void printarRegistradores(){ // Printa os registradores
 }
 void printarMemoria(){ // Printa a memória
 	for(int i = 0; i < 100; i++){
-		printf(" r%d: %d ", i, memoria[i]);
+		printf(" r%d: %d \n", i, memoria[i]);
 	}
 }
 // Aqui adicionamos o número binário da instrução na memória
@@ -191,7 +191,7 @@ int main ()
 		printf("\n");
 		pc++;
 	}
-	//printarMemoria();
+	printarMemoria();
 	
 	///executarInstrucaoR();
 	//xecutarInstrucaoI();
