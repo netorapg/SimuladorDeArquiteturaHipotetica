@@ -5,10 +5,14 @@
 #include "lib.h" // Biblioteca usada para extração de bits
 
 //COISAS PARA FAZER
-//Tire tudo do main, deixe o código mais modular
-// Deixe uma instrução armazenada para cada memória
-/*Faça com que você não precise definir manualmente a memoria[] toda vez que 
-for testar uma instrução*/
+// 1 - Fazer as instruções de comparação
+// 2 - Fazer as instruções de load
+// 3 - Fazer as instruções de store
+// 4 - Fazer as instruções de mov
+// 5 - Fazer as instruções de jump
+
+//Perguntar ao professor
+// A instrução de load funciona, no entanto, não do jeito certo
 
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
@@ -56,7 +60,7 @@ void printarRegistradores(){ // Printa os registradores
 }*/
 // Aqui adicionamos o número binário da instrução na memória
  // Exemplo de extração de bits
-    // O primeiro bit é o bit representa o formato
+    // O primeiro bit é o bit que representa o formato
     // Os próximos 6 bits representam o opcode
     // Os próximos 3 bits representam o destino
     // Os próximos 3 bits representam o operador 1
@@ -68,6 +72,7 @@ void instrucoesNaMemoria(){
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
+	memoria[4] = 0b0001111111010; // load r7, [r1]
 }
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
@@ -83,7 +88,7 @@ void inicializandoRegistradores(){
 // Aqui executamos a instrução
 void executarInstrucao() {
 
-	uint16_t instrucao = memoria[3]; // Pega a instrução na memória
+	uint16_t instrucao = memoria[4]; // Pega a instrução na memória
 
 	uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução
 	uint16_t opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
