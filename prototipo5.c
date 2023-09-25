@@ -78,8 +78,8 @@ void instrucoesNaMemoria(){
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
-	memoria[4] = 0b0001111111010; // load r7, [r1]
-	memoria[5] = 0b0010000111010; // store [r7], r2
+	memoria[4] = 0b0001111111010; // load r7, [r1] -- Não funciona como deveria
+	memoria[5] = 0b0010000111010; // store [r7], r2 -- Não funciona como deveria
 }
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
