@@ -4,6 +4,8 @@
 #include <assert.h>
 #include "lib.h" // Biblioteca usada para extração de bits
 
+// IMPORTANTE: UTILIZAR APENAS g++ para compilar o código
+
 //COISAS PARA FAZER
 // 0 - FAzer a decodificação do formato I
 // 1 - Fazer as instruções de comparação
@@ -11,10 +13,12 @@
 // 3 - Fazer as instruções de store
 // 4 - Fazer as instruções de mov
 // 5 - Fazer as instruções de jump
+// 6 - Faça que nem um processador, execute uma instrução por vez
 
 //Perguntar ao professor
 // A instrução de load funciona, no entanto, não do jeito certo. Ele não está seguindo a instrução binaria de forma correta
 // A instrução de store funciona, no entanto, não do jeito certo. Ele não está seguindo a instrução binaria de forma correta
+// Para o formato I, vale a pena criar uma outra função de extração de bits? Ou é melhor usar a mesma função de extração de bits?
 
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
@@ -50,9 +54,8 @@ uint16_t mov(uint16_t a, uint16_t b){ // Instrução de movimentação
 uint16_t load(uint16_t a){ // Instrução de load
     return memoria[a];
 }
-uint16_t store(uint16_t a, uint16_t b){ // Instrução de store
+void store(uint16_t a, uint16_t b){ // Instrução de store
 	memoria[a] = b;
-	return 0;
 }
 void printarRegistradores(){ // Printa os registradores
 	for(int i = 0; i < 8; i++){
@@ -78,8 +81,8 @@ void instrucoesNaMemoria(){
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
-	memoria[4] = 0b0001111111010; // load r7, [r1] -- Não funciona como deveria
-	memoria[5] = 0b0010000111010; // store [r7], r2 -- Não funciona como deveria
+	memoria[4] = 0b0001111111010000; // load r7, [r2] -- Não funciona como deveria
+	memoria[5] = 0b0010000111010000; // store [r7], r2 -- Não funciona como deveria
 }
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
@@ -95,7 +98,7 @@ void inicializandoRegistradores(){
 // Aqui executamos a instrução
 void executarInstrucao() {
 
-	uint16_t instrucao = memoria[5]; // Pega a instrução na memória
+	uint16_t instrucao = memoria[0]; // Pega a instrução na memória
 
 	uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução
 	uint16_t opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
@@ -122,9 +125,14 @@ switch (opcode) { // Executa a instrução de acordo com o opcode
         case 5:
         	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
         	break;
-        case 6:
+        case 15:
         	registradores[destino] = load(registradores[operador1]);
+			printf("load r%d, [r%d]", destino, operador1);
         	break;
+
+		case 7:
+			store(registradores[operador1], registradores[operador2]);
+			break;
 		default:
 			printf("Erro");
 			break;
@@ -134,6 +142,7 @@ switch (opcode) { // Executa a instrução de acordo com o opcode
 
 int main ()
 {
+	
 	instrucoesNaMemoria();
 	inicializandoRegistradores();
 	executarInstrucao();
