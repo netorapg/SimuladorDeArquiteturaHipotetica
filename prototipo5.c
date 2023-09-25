@@ -62,11 +62,11 @@ void printarRegistradores(){ // Printa os registradores
 		printf(" r%d: %d ", i, registradores[i]);
 	}
 }
-/*void preencheRegistradores(){
-	for(int i = 0; i < 8; i++){
-		registradores[i] = 0;
+void printarMemoria(){ // Printa a memória
+	for(int i = 0; i < 100; i++){
+		printf(" r%d: %d ", i, memoria[i]);
 	}
-}*/
+}
 // Aqui adicionamos o número binário da instrução na memória
  // Exemplo de extração de bits
     // O primeiro bit é o bit que representa o formato
@@ -81,15 +81,11 @@ void instrucoesNaMemoria(){
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
-
-	//memoria[4] = 0b0001111111010000; // load r7, [r2] -- Não funciona como deveria
-	//memoria[5] = 0b0010000111010000; 
 	memoria[4] = 0b1111010000000001; // mov r5, 1
 	memoria[5] = 0b0001111111010000; // load [r7], r2
-
-	memoria[6] = 0b1110000000000000; // mov r0, 0
-	memoria[7] = 0b0111111000000000;
-	//memoria[5] = 0b1111010000000001;
+	memoria[6] = 0b0010000000111010; // store [r7], r2
+	memoria[7] = 0b1110000000000000; // mov r0, 0
+	memoria[8] = 0b0111111000000000; //syscall 
 }
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
@@ -140,7 +136,7 @@ switch (opcode) { // Executa a instrução de acordo com o opcode
         	registradores[destino] = load(registradores[operador1]);
 			printf("load r%d, [r%d] \n", destino, operador1); //adicione um desse para todas as instruções
         	break;
-		case 7:
+		case 16:
 			store(registradores[operador1], registradores[operador2]);
 			printf("store r%d, [r%d] \n", operador1, operador2);
 			break;
@@ -180,7 +176,8 @@ int main ()
 	
 	uint16_t pc = 0; // Program counter
 
-	while (pc < 6){
+	printarMemoria();
+	while (pc < 8){
 		uint16_t instrucao = memoria[pc]; // Pega a instrução na memória
 		uint16_t formato = extract_bits(instrucao, 15, 1);
 		if(formato == 0){
@@ -194,6 +191,7 @@ int main ()
 		printf("\n");
 		pc++;
 	}
+	//printarMemoria();
 	
 	///executarInstrucaoR();
 	//xecutarInstrucaoI();
