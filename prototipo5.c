@@ -7,13 +7,8 @@
 // IMPORTANTE: UTILIZAR APENAS g++ para compilar o código
 
 //COISAS PARA FAZER
-// 0 - FAzer a decodificação do formato I
+// 0 - Fazer as instruções de jump
 // 1 - Fazer as instruções de comparação
-// 2 - Fazer as instruções de load
-// 3 - Fazer as instruções de store
-// 4 - Fazer as instruções de mov
-// 5 - Fazer as instruções de jump
-// 6 - Faça que nem um processador, execute uma instrução por vez
 
 //Perguntar ao professor
 // A instrução de load funciona, no entanto, não do jeito certo. Ele não está seguindo a instrução binaria de forma correta
@@ -86,11 +81,14 @@ void instrucoesNaMemoria(){
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
+
 	//memoria[4] = 0b0001111111010000; // load r7, [r2] -- Não funciona como deveria
 	//memoria[5] = 0b0010000111010000; 
-	memoria[4] = 0b1111010000000001;
-	memoria[5] = 0b1110000000000000;
-	memoria[6] = 0b0111111000000000;
+	memoria[4] = 0b1111010000000001; // mov r5, 1
+	memoria[5] = 0b0001111111010000; // load [r7], r2
+
+	memoria[6] = 0b1110000000000000; // mov r0, 0
+	memoria[7] = 0b0111111000000000;
 	//memoria[5] = 0b1111010000000001;
 }
 // Aqui inicializamos os registradores
