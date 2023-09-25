@@ -5,6 +5,7 @@
 #include "lib.h" // Biblioteca usada para extração de bits
 
 //COISAS PARA FAZER
+// 0 - FAzer a decodificação do formato I
 // 1 - Fazer as instruções de comparação
 // 2 - Fazer as instruções de load
 // 3 - Fazer as instruções de store
@@ -12,7 +13,8 @@
 // 5 - Fazer as instruções de jump
 
 //Perguntar ao professor
-// A instrução de load funciona, no entanto, não do jeito certo
+// A instrução de load funciona, no entanto, não do jeito certo. Ele não está seguindo a instrução binaria de forma correta
+// A instrução de store funciona, no entanto, não do jeito certo. Ele não está seguindo a instrução binaria de forma correta
 
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
@@ -48,6 +50,10 @@ uint16_t mov(uint16_t a, uint16_t b){ // Instrução de movimentação
 uint16_t load(uint16_t a){ // Instrução de load
     return memoria[a];
 }
+uint16_t store(uint16_t a, uint16_t b){ // Instrução de store
+	memoria[a] = b;
+	return 0;
+}
 void printarRegistradores(){ // Printa os registradores
 	for(int i = 0; i < 8; i++){
 		printf(" r%d: %d \n", i, registradores[i]);
@@ -73,6 +79,7 @@ void instrucoesNaMemoria(){
 	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
 	memoria[4] = 0b0001111111010; // load r7, [r1]
+	memoria[5] = 0b0010000111010; // store [r7], r2
 }
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
@@ -88,7 +95,7 @@ void inicializandoRegistradores(){
 // Aqui executamos a instrução
 void executarInstrucao() {
 
-	uint16_t instrucao = memoria[4]; // Pega a instrução na memória
+	uint16_t instrucao = memoria[5]; // Pega a instrução na memória
 
 	uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução
 	uint16_t opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
