@@ -10,6 +10,7 @@
 // 0 - Fazer as instruções de jump
 // 1 - Fazer as instruções de comparação
 // 2 - FAzer o store funcionar
+// 3 - FAzer o cmp_equal e o cmp_neq funcionar
 
 //Perguntar ao professor
 
@@ -63,7 +64,7 @@ void printarRegistradores(){ // Printa os registradores
 }
 void printarMemoria(){ // Printa a memória
 	for(int i = 0; i < 100; i++){
-		printf(" r%d: %d \n", i, memoria[i]);
+		printf(" %d: %d ", i, memoria[i]);
 	}
 }
 // Aqui adicionamos o número binário da instrução na memória
