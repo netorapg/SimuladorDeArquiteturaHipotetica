@@ -9,11 +9,10 @@
 //COISAS PARA FAZER
 // 0 - Fazer as instruções de jump
 // 1 - Fazer as instruções de comparação
+// 2 - FAzer o store funcionar
 
 //Perguntar ao professor
-// A instrução de load funciona, no entanto, não do jeito certo. Ele não está seguindo a instrução binaria de forma correta
-// A instrução de store funciona, no entanto, não do jeito certo. Ele não está seguindo a instrução binaria de forma correta
-// Para o formato I, vale a pena criar uma outra função de extração de bits? Ou é melhor usar a mesma função de extração de bits?
+
 
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
