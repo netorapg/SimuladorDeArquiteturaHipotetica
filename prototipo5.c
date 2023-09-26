@@ -32,16 +32,10 @@ uint16_t divi(uint16_t a, uint16_t b){ // Instrução de divisão
 	return a/b;
 }
 uint16_t cmp_equal(uint16_t a, uint16_t b){ // Instrução de comparação igual
-    if(a == b){
-        return 1;
-    }
-    return 0;
+  	return (a == b);
 }
 uint16_t cmp_neq(uint16_t a, uint16_t b){ // Instrução de comparação diferente
-    if(a != b){
-        return 1;
-    }
-    return 0;
+	return (a != b);
 }
 void mov(uint16_t registrador, uint16_t imediato){ // Instrução de mov
 	registradores[registrador] = imediato;
@@ -84,8 +78,12 @@ void instrucoesNaMemoria(){
 	memoria[4] = 0b1111010000000001; // mov r5, 1
 	memoria[5] = 0b0001111111010000; // load [r7], r2
 	memoria[6] = 0b0010000000111010; // store [r7], r2
-	memoria[7] = 0b1110000000000000; // mov r0, 0
-	memoria[8] = 0b0111111000000000; //syscall 
+	memoria[7] = 0b0000100011000101; //cmp_equal r3, r0, r5
+	memoria[8] = 0b0000100011100110; //cmp_equal r3, r4, r6
+	memoria[9] = 0b0000101010101111; //cmp_neq r2, r5, r7 
+	memoria[10] = 0b0000101010111001; //cmp_neq r2, r7, r1	
+	memoria[11] = 0b1110000000000000; // mov r0, 0
+	memoria[12] = 0b0111111000000000; //syscall
 }
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
