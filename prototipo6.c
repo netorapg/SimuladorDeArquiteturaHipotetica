@@ -86,32 +86,6 @@ void printarMemoria(){ // Printa a memória
     // Os próximos 3 bits representam o operador 2
 	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
 	//
-/*void instrucoesNaMemoria(){
-	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
-	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
-	memoria[2] = 0b1000000000000100;//jump 4 
-	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
-	memoria[4] = 0b1111010000000001; // mov r5, 1
-	memoria[5] = 0b0001111111010000; // load [r7], r2
-	memoria[6] = 0b0010000000111010; // store [r7], r2
-	memoria[7] = 0b0000100011000101; //cmp_equal r3, r0, r5
-	memoria[8] = 0b1010000000001010; //jump_cond r0, 10
-	memoria[9] = 0b0000101010101111; //cmp_neq r2, r5, r7 
-	memoria[10] = 0b0000101010111001; //cmp_neq r2, r7, r1	
-	memoria[11] = 0b0000010111101101;// Mul r7, r5, r5
-	memoria[12] = 0b1110000000000000; // mov r0, 0 
-	memoria[13] = 0b0111111000000000; //syscall
-}*/
-/*void lerArquivo(){
-        FILE *arquivo;
-    arquivo = fopen("count.bin", "rb");
-    if(arquivo == NULL){
-        printf("Erro ao abrir o arquivo\n");
-        exit(0);
-    }
-    fread(memoria, sizeof(uint16_t), 64*1024, arquivo);
-    fclose(arquivo);  
-}*/
 
 
 // Aqui inicializamos os registradores
