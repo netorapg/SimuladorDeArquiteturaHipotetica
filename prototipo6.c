@@ -203,7 +203,7 @@ load_binary_to_memory(argv[1], memoria, 64*1024);
 		}
 		printarRegistradores();
 		printf("\n");
-      //  getchar();
+        getchar();
 		
 		//printarMemoria();
 	}
