@@ -35,26 +35,41 @@ uint16_t cmp_equal(uint16_t a, uint16_t b){ // Instrução de comparação igual
 uint16_t cmp_neq(uint16_t a, uint16_t b){ // Instrução de comparação diferente
 	return (a != b);
 }
-void mov(uint16_t a, uint16_t b){ // Instrução de mov
-	registradores[a] = b;
-}
 uint16_t load(uint16_t a){ // Instrução de load
     return memoria[a];
 }
 void store(uint16_t a, uint16_t b){ // Instrução de store
 	memoria[a] = b;
 }
+void mov(uint16_t a, uint16_t b){ // Instrução de mov
+	registradores[a] = b;
+}
+
+void jump(uint16_t b){ // Instrução de jump
+	pc = b;
+}
+
+void jump_cond(uint16_t a, uint16_t b){ // Instrução de jump condicional
+	if (a == 1){
+		pc = b;
+	}
+}
+
 void syscall(){ // Instrução de syscall
 	if (registradores[0] == 0){
 		ligado = 0;
-		exit(0);
+		//exit(0);
 	}
 }
 
 void printarRegistradores(){ // Printa os registradores
+	
 	for(int i = 0; i < 8; i++){
 		printf(" r%d: %d ", i, registradores[i]);
 	}
+	printf("\n");
+	printf("\n");
+	printf("PC: %d", pc);
 }
 void printarMemoria(){ // Printa a memória
 	for(int i = 0; i < 20; i++){
@@ -73,18 +88,18 @@ void printarMemoria(){ // Printa a memória
 void instrucoesNaMemoria(){
 	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
-	memoria[2] = 0b0000010111101101;// Mul r7, r5, r5
+	memoria[2] = 0b1000000000000100;//jump 4 
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
 	memoria[4] = 0b1111010000000001; // mov r5, 1
 	memoria[5] = 0b0001111111010000; // load [r7], r2
 	memoria[6] = 0b0010000000111010; // store [r7], r2
 	memoria[7] = 0b0000100011000101; //cmp_equal r3, r0, r5
-	memoria[8] = 0b0000100011100110; //cmp_equal r3, r4, r6
+	memoria[8] = 0b1010000000001010; //jump_cond r0, 10
 	memoria[9] = 0b0000101010101111; //cmp_neq r2, r5, r7 
 	memoria[10] = 0b0000101010111001; //cmp_neq r2, r7, r1	
-	memoria[11] = 0b1110000000000000; // mov r0, 0
-	//memoria[12] = 
-	memoria[12] = 0b0111111000000000; //syscall
+	memoria[11] = 0b0000010111101101;// Mul r7, r5, r5
+	memoria[12] = 0b1110000000000000; // mov r0, 0 
+	memoria[13] = 0b0111111000000000; //syscall
 }
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
@@ -130,7 +145,7 @@ void executarInstrucaoR(uint16_t instrucao) {
         	break;
         case 15:
         	registradores[destino] = load(registradores[operador1]);
-			printf("load r%d, [r%d] \n", destino, operador1); //adicione um desse para todas as instruções
+			printf("load r%d, [r%d] \n", destino, operador1);
         	break;
 		case 16:
 			store(registradores[operador1], registradores[operador2]);
@@ -142,7 +157,6 @@ void executarInstrucaoR(uint16_t instrucao) {
 			break;
 		default:
 			printf("Erro R\n");
-			break;
 	}
 }
 
@@ -151,13 +165,21 @@ void executarInstrucaoI(uint16_t instrucao){
 	uint16_t registrador = extract_bits(instrucao, 10, 3); // Extrai o registrador da instrução
 	uint16_t imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
 	switch(opcode){
+	
+	case 0:
+		jump(imediato);
+		printf("jump %d \n", imediato);
+		break;
+	case 1:
+		jump_cond(registradores[registrador], imediato);
+		printf("jump_cond r%d, %d \n", registrador, imediato);
+		break;
 	case 3:
 		mov(registrador, imediato);
 		printf("mov r%d, %d \n", registrador, imediato);
 		break;
 	default:
 		printf("Erro I\n");
-		break;
 	}
 }
 
@@ -168,27 +190,26 @@ int main ()
 	inicializandoRegistradores();
 	
 	
-	printarMemoria();
-	printf("\n");
-
+	//printarMemoria();
+	//printf("\n");
+	printf("PC: %d \n", pc);
 	while (ligado != 0){
 		uint16_t instrucao = memoria[pc]; // Pega a instrução na memória
-		uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução
+		uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
 		if(formato == 0){ // Se o formato for 0, a instrução é do tipo R
 			executarInstrucaoR(instrucao);
+			pc++;
 		}
 		else { // Se o formato for 1, a instrução é do tipo I
 			executarInstrucaoI(instrucao);
+			if(extract_bits(instrucao, 13, 2) == 3){
+				pc++;
+			}
 		}
 		printarRegistradores();
 		printf("\n");
-		pc++;
-		printarMemoria();
+		
+		//printarMemoria();
 	}
-
-	
-	///executarInstrucaoR();
-	//xecutarInstrucaoI();
-	//printarRegistradores();
 	return 0;
 }
