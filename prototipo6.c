@@ -186,6 +186,9 @@ void executarInstrucaoI(uint16_t instrucao){
 	case 1:
 		jump_cond(registradores[registrador], imediato);
 		printf("jump_cond r%d, %d \n", registrador, imediato);
+        if (registradores[registrador] == 0){
+			pc++;
+		}
 		break;
 	case 3:
 		mov(registrador, imediato);
@@ -226,7 +229,7 @@ load_binary_to_memory(argv[1], memoria, 64*1024);
 		}
 		printarRegistradores();
 		printf("\n");
-        getchar();
+      //  getchar();
 		
 		//printarMemoria();
 	}

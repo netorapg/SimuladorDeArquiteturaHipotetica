@@ -174,6 +174,9 @@ void executarInstrucaoI(uint16_t instrucao){
 	case 1:
 		jump_cond(registradores[registrador], imediato);
 		printf("jump_cond r%d, %d \n", registrador, imediato);
+		if (registradores[registrador] == 0){
+			pc++;
+		}
 		break;
 	case 3:
 		mov(registrador, imediato);
@@ -209,6 +212,7 @@ int main ()
 			if(extract_bits(instrucao, 13, 2) == 3){
 				pc++;
 			}
+			
 		}
 		printarRegistradores();
 		printf("\n");
