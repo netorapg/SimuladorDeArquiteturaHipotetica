@@ -3,11 +3,12 @@
 #include <stdint.h>
 #include <assert.h>
 #include "lib.h" // Biblioteca usada para extração de bits
+#include "lib.c"
 
 // IMPORTANTE: UTILIZAR APENAS g++ para compilar o código
 
 //COISAS PARA FAZER
-// 0 - Fazer as instruções de jump
+// 0 - Fazer com que leia arquivo.bin
 
 //Perguntar ao professor
 
@@ -15,7 +16,7 @@
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
 uint16_t ligado = 1; // Variável que indica se o processador está ligado ou não
-uint16_t pc = 0; // Program counter
+uint16_t pc = 1; // Program counter
 // Instruções de 16 bits
 uint16_t add(uint16_t a, uint16_t b){ // Instrução de adição
 	return a+b;
@@ -85,7 +86,7 @@ void printarMemoria(){ // Printa a memória
     // Os próximos 3 bits representam o operador 2
 	//0b0 000000 000 000 000; // Exemplo de um número binário de 16 bits
 	//
-void instrucoesNaMemoria(){
+/*void instrucoesNaMemoria(){
 	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
 	memoria[2] = 0b1000000000000100;//jump 4 
@@ -100,7 +101,19 @@ void instrucoesNaMemoria(){
 	memoria[11] = 0b0000010111101101;// Mul r7, r5, r5
 	memoria[12] = 0b1110000000000000; // mov r0, 0 
 	memoria[13] = 0b0111111000000000; //syscall
-}
+}*/
+/*void lerArquivo(){
+        FILE *arquivo;
+    arquivo = fopen("count.bin", "rb");
+    if(arquivo == NULL){
+        printf("Erro ao abrir o arquivo\n");
+        exit(0);
+    }
+    fread(memoria, sizeof(uint16_t), 64*1024, arquivo);
+    fclose(arquivo);  
+}*/
+
+
 // Aqui inicializamos os registradores
 void inicializandoRegistradores(){
 	registradores[0] = 1; 
@@ -184,24 +197,26 @@ void executarInstrucaoI(uint16_t instrucao){
 }
 
 
-int main ()
+int main (int argc, char **argv)
 {
-	instrucoesNaMemoria();
-	inicializandoRegistradores();
-	
-	
+//	instrucoesNaMemoria();
+//	inicializandoRegistradores();
+if (argc != 2) {
+		printf("usage: %s [bin_name]\n", argv[0]);
+		exit(1);
+	}
+load_binary_to_memory(argv[1], memoria, 64*1024);
+  //  lerArquivo();
 	//printarMemoria();
 	//printf("\n");
-	printf("PC: %d \n", pc);
+	//printf("PC: %d \n", pc);
 	while (ligado != 0){
 		uint16_t instrucao = memoria[pc]; // Pega a instrução na memória
 		uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
 		if(formato == 0){ // Se o formato for 0, a instrução é do tipo R
 			executarInstrucaoR(instrucao);
-
-			if(extract_bits(instrucao, 9, 6) != 63){
-				pc++;
-			}
+            pc++;
+			
 		}
 		else { // Se o formato for 1, a instrução é do tipo I
 			executarInstrucaoI(instrucao);
@@ -211,6 +226,7 @@ int main ()
 		}
 		printarRegistradores();
 		printf("\n");
+        getchar();
 		
 		//printarMemoria();
 	}

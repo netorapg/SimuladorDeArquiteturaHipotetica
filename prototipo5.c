@@ -94,7 +94,8 @@ void instrucoesNaMemoria(){
 	memoria[5] = 0b0001111111010000; // load [r7], r2
 	memoria[6] = 0b0010000000111010; // store [r7], r2
 	memoria[7] = 0b0000100011000101; //cmp_equal r3, r0, r5
-	memoria[8] = 0b1010000000001010; //jump_cond r0, 10
+	//memoria[8] = 0b1010000000001010; //jump_cond r0, 10
+	memoria[8] = 0b1011100000001010; //jump_cond r6, 10
 	memoria[9] = 0b0000101010101111; //cmp_neq r2, r5, r7 
 	memoria[10] = 0b0000101010111001; //cmp_neq r2, r7, r1	
 	memoria[11] = 0b0000010111101101;// Mul r7, r5, r5
@@ -211,6 +212,7 @@ int main ()
 		}
 		printarRegistradores();
 		printf("\n");
+		getchar();
 		
 		//printarMemoria();
 	}
