@@ -8,7 +8,7 @@
 // IMPORTANTE: UTILIZAR APENAS g++ para compilar o código
 
 //COISAS PARA FAZER
-// 0 - Fazer com que leia arquivo.bin
+// 0 - Faça com que apareça um print na tela quando o syscall não é atendido, ou seja, quando o registrador 0 não recebe 0
 
 //Perguntar ao professor
 
@@ -203,9 +203,9 @@ load_binary_to_memory(argv[1], memoria, 64*1024);
 		}
 		printarRegistradores();
 		printf("\n");
-        getchar();
+        //getchar();
 		
-		//printarMemoria();
+		printarMemoria();
 	}
 	return 0;
 }
