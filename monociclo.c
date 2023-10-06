@@ -179,10 +179,6 @@ int main (int argc, char **argv) {
             pc++;
 		} else { // Se o formato for 1, a instrução é do tipo I
 			executarInstrucaoI(instrucao);
-			/*if(extract_bits(instrucao, 13, 2) == 3) {
-				pc++;
-			}*/
-			
 		}
 		printarRegistradores();
 		printf("\n");
