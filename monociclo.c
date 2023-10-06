@@ -9,6 +9,12 @@ uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
 uint16_t ligado = 1; // Variável que indica se o processador está ligado ou não
 uint16_t pc = 1; // Program counter
+uint16_t opcode; // Extrai o opcode da instrução
+uint16_t destino; // Extrai o destino da instrução
+uint16_t operador1; // Extrai o operador 1 da instrução
+uint16_t operador2; // Extrai o operador 2 da instrução
+uint16_t registrador; // Extrai o registrador da instrução
+uint16_t imediato; // Extrai o imediato da instrução
 
 // Instruções de 16 bits
 uint16_t add(uint16_t a, uint16_t b) { // Instrução de adição
@@ -54,6 +60,8 @@ void jump(uint16_t b) { // Instrução de jump
 void jump_cond(uint16_t a, uint16_t b) { // Instrução de jump condicional
 	if (a == 1) {
 		pc = b;
+	} else {
+		pc++;
 	}
 }
 
@@ -84,10 +92,10 @@ void printarMemoria() { // Printa a memória
 
 // Função que executa as instrucoes do tipo R
 void executarInstrucaoR(uint16_t instrucao) {
-	uint16_t opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
-	uint16_t destino = extract_bits(instrucao, 6, 3); // Extrai o destino da instrução
-	uint16_t operador1 = extract_bits(instrucao, 3, 3); // Extrai o operador 1 da instrução
-	uint16_t operador2 = extract_bits(instrucao, 0, 3); // Extrai o operador 2 da instrução
+opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
+destino = extract_bits(instrucao, 6, 3); // Extrai o destino da instrução
+operador1 = extract_bits(instrucao, 3, 3); // Extrai o operador 1 da instrução
+operador2 = extract_bits(instrucao, 0, 3); // Extrai o operador 2 da instrução
 	switch (opcode) { // Executa a instrução de acordo com o opcode
 		case 0:
 			registradores[destino] = add(registradores[operador1], registradores[operador2]);
@@ -105,18 +113,18 @@ void executarInstrucaoR(uint16_t instrucao) {
 			registradores[destino] = divi(registradores[operador1], registradores[operador2]);
 			printf("divi r%d, r%d, r%d \n", destino, operador1, operador2);
 			break;
-	        case 4:
-	        	registradores[destino] = cmp_equal(registradores[operador1], registradores[operador2]);
+	    case 4:
+	        registradores[destino] = cmp_equal(registradores[operador1], registradores[operador2]);
 			printf("cmp_equal r%d, r%d, r%d \n", destino, operador1, operador2);
-	        	break;
-	        case 5:
-	        	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
+	    	break;
+        case 5:
+	    	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
 			printf("cmp_neq r%d, r%d, r%d \n", destino, operador1, operador2);
-	        	break;
-	        case 15:
-	        	registradores[destino] = load(registradores[operador1]);
+	       	break;
+        case 15:
+	       	registradores[destino] = load(registradores[operador1]);
 			printf("load r%d, [r%d] \n", destino, operador1);
-	        	break;
+	       	break;
 		case 16:
 			store(registradores[operador1], registradores[operador2]);
 			printf("store r%d, [r%d] \n", operador1, operador2);
@@ -125,16 +133,16 @@ void executarInstrucaoR(uint16_t instrucao) {
 			syscall();
 			printf("syscall \n");
 			break;
-		default:
+			default:
 			printf("Erro R\n");
 	}
 }
 
 // Função que executa as instrucoes do tipo I
 void executarInstrucaoI(uint16_t instrucao) {
-	uint16_t opcode = extract_bits(instrucao, 13, 2); // Extrai o opcode da instrução
-	uint16_t registrador = extract_bits(instrucao, 10, 3); // Extrai o registrador da instrução
-	uint16_t imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
+opcode = extract_bits(instrucao, 13, 2); // Extrai o opcode da instrução
+registrador = extract_bits(instrucao, 10, 3); // Extrai o registrador da instrução
+imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
 	switch(opcode) {
 		case 0:
 			jump(imediato);
@@ -143,9 +151,6 @@ void executarInstrucaoI(uint16_t instrucao) {
 		case 1:
 			jump_cond(registradores[registrador], imediato);
 			printf("jump_cond r%d, %d \n", registrador, imediato);
-			if (registradores[registrador] == 0){
-			    pc++;
-			}
 			break;
 		case 3:
 			mov(registrador, imediato);
@@ -155,7 +160,6 @@ void executarInstrucaoI(uint16_t instrucao) {
 			printf("Erro I\n");
 	}
 }
-
 
 int main (int argc, char **argv) {
 	
@@ -177,11 +181,12 @@ int main (int argc, char **argv) {
 			if(extract_bits(instrucao, 13, 2) == 3) {
 				pc++;
 			}
+
 		}
 		printarRegistradores();
 		printf("\n");
-        	//getchar();
-		//printarMemoria();
+        //getchar();
+		printarMemoria();
 	}
 	return 0;
 }
