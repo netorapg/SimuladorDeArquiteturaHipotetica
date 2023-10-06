@@ -32,11 +32,11 @@ uint16_t cmp_equal(uint16_t a, uint16_t b) { // Instrução de comparação igua
 }
 
 uint16_t cmp_neq(uint16_t a, uint16_t b) { // Instrução de comparação diferente
-    return (a != b);
+    	return (a != b);
 }
 
 uint16_t load(uint16_t a) { // Instrução de load
-    return memoria[a];
+    	return memoria[a];
 }
 
 void store(uint16_t a, uint16_t b) { // Instrução de store
@@ -105,18 +105,18 @@ void executarInstrucaoR(uint16_t instrucao) {
 			registradores[destino] = divi(registradores[operador1], registradores[operador2]);
 			printf("divi r%d, r%d, r%d \n", destino, operador1, operador2);
 			break;
-        case 4:
-        	registradores[destino] = cmp_equal(registradores[operador1], registradores[operador2]);
-			printf("cmp_equal r%d, r%d, r%d \n", destino, operador1, operador2);
-        	break;
-        case 5:
-        	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
-			printf("cmp_neq r%d, r%d, r%d \n", destino, operador1, operador2);
-        	break;
-        case 15:
-        	registradores[destino] = load(registradores[operador1]);
-			printf("load r%d, [r%d] \n", destino, operador1);
-        	break;
+	        case 4:
+	        	registradores[destino] = cmp_equal(registradores[operador1], registradores[operador2]);
+				printf("cmp_equal r%d, r%d, r%d \n", destino, operador1, operador2);
+	        	break;
+	        case 5:
+	        	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
+				printf("cmp_neq r%d, r%d, r%d \n", destino, operador1, operador2);
+	        	break;
+	        case 15:
+	        	registradores[destino] = load(registradores[operador1]);
+				printf("load r%d, [r%d] \n", destino, operador1);
+	        	break;
 		case 16:
 			store(registradores[operador1], registradores[operador2]);
 			printf("store r%d, [r%d] \n", operador1, operador2);
@@ -171,7 +171,7 @@ int main (int argc, char **argv) {
 		uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
 		if(formato == 0) { // Se o formato for 0, a instrução é do tipo R
 			executarInstrucaoR(instrucao);
-            pc++;
+            		pc++;
 		} else { // Se o formato for 1, a instrução é do tipo I
 			executarInstrucaoI(instrucao);
 			if(extract_bits(instrucao, 13, 2) == 3) {
@@ -180,7 +180,7 @@ int main (int argc, char **argv) {
 		}
 		printarRegistradores();
 		printf("\n");
-        //getchar();
+        	//getchar();
 		//printarMemoria();
 	}
 	return 0;
