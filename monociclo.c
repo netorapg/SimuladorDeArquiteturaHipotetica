@@ -32,7 +32,7 @@ uint16_t cmp_equal(uint16_t a, uint16_t b) { // Instrução de comparação igua
 }
 
 uint16_t cmp_neq(uint16_t a, uint16_t b) { // Instrução de comparação diferente
-	return (a != b);
+    return (a != b);
 }
 
 uint16_t load(uint16_t a) { // Instrução de load
@@ -163,7 +163,7 @@ int main (int argc, char **argv) {
 		printf("usage: %s [bin_name]\n", argv[0]);
 		exit(1);
     }
-    
+
     load_binary_to_memory(argv[1], memoria, 64*1024);
 
 	while (ligado != 0) {
@@ -181,7 +181,7 @@ int main (int argc, char **argv) {
 		printarRegistradores();
 		printf("\n");
         //getchar();
-		printarMemoria();
+		//printarMemoria();
 	}
 	return 0;
 }
