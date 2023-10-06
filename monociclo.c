@@ -51,6 +51,7 @@ void store(uint16_t a, uint16_t b) { // Instrução de store
 
 void mov(uint16_t a, uint16_t b) { // Instrução de mov
 	registradores[a] = b;
+	pc++;
 }
 
 void jump(uint16_t b) { // Instrução de jump
@@ -178,10 +179,10 @@ int main (int argc, char **argv) {
             pc++;
 		} else { // Se o formato for 1, a instrução é do tipo I
 			executarInstrucaoI(instrucao);
-			if(extract_bits(instrucao, 13, 2) == 3) {
+			/*if(extract_bits(instrucao, 13, 2) == 3) {
 				pc++;
-			}
-
+			}*/
+			
 		}
 		printarRegistradores();
 		printf("\n");
