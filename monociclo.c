@@ -171,7 +171,7 @@ int main (int argc, char **argv) {
 		uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
 		if(formato == 0) { // Se o formato for 0, a instrução é do tipo R
 			executarInstrucaoR(instrucao);
-            		pc++;
+            pc++;
 		} else { // Se o formato for 1, a instrução é do tipo I
 			executarInstrucaoI(instrucao);
 			if(extract_bits(instrucao, 13, 2) == 3) {
