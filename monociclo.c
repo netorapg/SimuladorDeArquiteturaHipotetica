@@ -107,15 +107,15 @@ void executarInstrucaoR(uint16_t instrucao) {
 			break;
 	        case 4:
 	        	registradores[destino] = cmp_equal(registradores[operador1], registradores[operador2]);
-				printf("cmp_equal r%d, r%d, r%d \n", destino, operador1, operador2);
+			printf("cmp_equal r%d, r%d, r%d \n", destino, operador1, operador2);
 	        	break;
 	        case 5:
 	        	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
-				printf("cmp_neq r%d, r%d, r%d \n", destino, operador1, operador2);
+			printf("cmp_neq r%d, r%d, r%d \n", destino, operador1, operador2);
 	        	break;
 	        case 15:
 	        	registradores[destino] = load(registradores[operador1]);
-				printf("load r%d, [r%d] \n", destino, operador1);
+			printf("load r%d, [r%d] \n", destino, operador1);
 	        	break;
 		case 16:
 			store(registradores[operador1], registradores[operador2]);
@@ -143,7 +143,7 @@ void executarInstrucaoI(uint16_t instrucao) {
 	    case 1:
 		    jump_cond(registradores[registrador], imediato);
 		    printf("jump_cond r%d, %d \n", registrador, imediato);
-            if (registradores[registrador] == 0){
+		    if (registradores[registrador] == 0){
 			    pc++;
 		    }
 		    break;
@@ -158,13 +158,13 @@ void executarInstrucaoI(uint16_t instrucao) {
 
 
 int main (int argc, char **argv) {
-
-    if (argc != 2) {
+	
+	if (argc != 2) {
 		printf("usage: %s [bin_name]\n", argv[0]);
 		exit(1);
-    }
+    	}
 
-    load_binary_to_memory(argv[1], memoria, 64*1024);
+	load_binary_to_memory(argv[1], memoria, 64*1024);
 
 	while (ligado != 0) {
 		uint16_t instrucao = memoria[pc]; // Pega a instrução na memória
