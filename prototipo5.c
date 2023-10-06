@@ -88,7 +88,8 @@ void printarMemoria(){ // Printa a memória
 void instrucoesNaMemoria(){
 	memoria[0] = 0b0000000101101101; // Add r5, r5, r5
 	memoria[1] = 0b0000001110101101;// Sub r6, r5, r5
-	memoria[2] = 0b0010000000111010; // store [r7], r2
+	memoria[2] = 0b0001111111010000; // load [r7], r2
+	//memoria[2] = 0b0010000000111010; // store [r7], r2
 	//memoria[2] = 0b1000000000000100;//jump 4 
 	memoria[3] = 0b0000011100101101;// Div r4, r5, r5
 	memoria[4] = 0b1111010000000001; // mov r5, 1

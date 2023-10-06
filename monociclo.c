@@ -86,9 +86,10 @@ void printarRegistradores() { // Printa os registradores
 }
 
 void printarMemoria() { // Printa a memória
-	for(int i = 0; i < 20; i++) {
-		printf(" %d: %d ", i, memoria[i]);
+	for(int i = 0; i < 40; i++) {
+		printf("%d ", memoria[i]);
 	}
+	printf("\n");
 }
 
 // Função que executa as instrucoes do tipo R
