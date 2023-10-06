@@ -21,27 +21,35 @@ uint16_t pc = 1; // Program counter
 uint16_t add(uint16_t a, uint16_t b){ // Instrução de adição
 	return a+b;
 }
+
 uint16_t sub(uint16_t a, uint16_t b){ // Instrução de subtração
 	return a-b;
 }
+
 uint16_t mul(uint16_t a, uint16_t b){ // Instrução de multiplicação
 	return a*b;
 }
+
 uint16_t divi(uint16_t a, uint16_t b){ // Instrução de divisão
 	return a/b;
 }
+
 uint16_t cmp_equal(uint16_t a, uint16_t b){ // Instrução de comparação igual
   	return (a == b);
 }
+
 uint16_t cmp_neq(uint16_t a, uint16_t b){ // Instrução de comparação diferente
 	return (a != b);
 }
+
 uint16_t load(uint16_t a){ // Instrução de load
     return memoria[a];
 }
+
 void store(uint16_t a, uint16_t b){ // Instrução de store
 	memoria[a] = b;
 }
+
 void mov(uint16_t a, uint16_t b){ // Instrução de mov
 	registradores[a] = b;
 }
@@ -63,8 +71,7 @@ void syscall(){ // Instrução de syscall
 	}
 }
 
-void printarRegistradores(){ // Printa os registradores
-	
+void printarRegistradores(){ // Printa os registradores	
 	for(int i = 0; i < 8; i++){
 		printf(" r%d: %d ", i, registradores[i]);
 	}
@@ -72,6 +79,7 @@ void printarRegistradores(){ // Printa os registradores
 	printf("\n");
 	printf("PC: %d", pc);
 }
+
 void printarMemoria(){ // Printa a memória
 	for(int i = 0; i < 20; i++){
 		printf(" %d: %d ", i, memoria[i]);
@@ -89,7 +97,7 @@ void printarMemoria(){ // Printa a memória
 
 
 // Aqui inicializamos os registradores
-void inicializandoRegistradores(){
+/*void inicializandoRegistradores(){
 	registradores[0] = 1; 
 	registradores[1] = 2;
 	registradores[2] = 3;
@@ -98,7 +106,8 @@ void inicializandoRegistradores(){
 	registradores[5] = 6;
 	registradores[6] = 7;
 	registradores[7] = 8;
-}
+}*/
+
 // Aqui executamos a instrução
 void executarInstrucaoR(uint16_t instrucao) {
 	uint16_t opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
@@ -129,6 +138,7 @@ void executarInstrucaoR(uint16_t instrucao) {
         case 5:
         	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
 			printf("cmp_neq r%d, r%d, r%d \n", destino, operador1, operador2);
+
         	break;
         case 15:
         	registradores[destino] = load(registradores[operador1]);
