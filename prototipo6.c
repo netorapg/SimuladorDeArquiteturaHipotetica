@@ -8,10 +8,7 @@
 // IMPORTANTE: UTILIZAR APENAS g++ para compilar o código
 
 //COISAS PARA FAZER
-// 0 - Faça com que apareça um print na tela quando o syscall não é atendido, ou seja, quando o registrador 0 não recebe 0
-
-//Perguntar ao professor
-
+// O monociclo está concluído, agora precisamos deixar o código mais bonito e depois fazer o pipe line
 
 uint16_t memoria [64 * 1024]; // 64 KB de memória
 uint16_t registradores [8]; // 8 registradores de propósito geral
