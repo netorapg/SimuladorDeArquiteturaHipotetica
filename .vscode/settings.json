@@ -1,6 +1,7 @@
 {
     "cmake.configureOnOpen": true,
     "files.associations": {
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "random": "c"
     }
 }

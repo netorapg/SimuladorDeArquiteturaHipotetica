@@ -138,7 +138,6 @@ void executarInstrucaoR(uint16_t instrucao) {
         case 5:
         	registradores[destino] = cmp_neq(registradores[operador1], registradores[operador2]);
 			printf("cmp_neq r%d, r%d, r%d \n", destino, operador1, operador2);
-
         	break;
         case 15:
         	registradores[destino] = load(registradores[operador1]);
@@ -193,17 +192,13 @@ if (argc != 2) {
 		exit(1);
 	}
 load_binary_to_memory(argv[1], memoria, 64*1024);
-  //  lerArquivo();
-	//printarMemoria();
-	//printf("\n");
-	//printf("PC: %d \n", pc);
+
 	while (ligado != 0){
 		uint16_t instrucao = memoria[pc]; // Pega a instrução na memória
 		uint16_t formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
 		if(formato == 0){ // Se o formato for 0, a instrução é do tipo R
 			executarInstrucaoR(instrucao);
             pc++;
-			
 		}
 		else { // Se o formato for 1, a instrução é do tipo I
 			executarInstrucaoI(instrucao);
