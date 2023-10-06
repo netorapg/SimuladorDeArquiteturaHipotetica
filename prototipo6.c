@@ -67,6 +67,9 @@ void jump_cond(uint16_t a, uint16_t b){ // Instrução de jump condicional
 void syscall(){ // Instrução de syscall
 	if (registradores[0] == 0){
 		ligado = 0;
+	} else {
+		printf("\n");
+		printf("Syscall não atendido\n");
 		//exit(0);
 	}
 }
