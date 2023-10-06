@@ -136,23 +136,23 @@ void executarInstrucaoI(uint16_t instrucao) {
 	uint16_t registrador = extract_bits(instrucao, 10, 3); // Extrai o registrador da instrução
 	uint16_t imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
 	switch(opcode) {
-	    case 0:
-		    jump(imediato);
-		    printf("jump %d \n", imediato);
-		    break;
-	    case 1:
-		    jump_cond(registradores[registrador], imediato);
-		    printf("jump_cond r%d, %d \n", registrador, imediato);
-		    if (registradores[registrador] == 0){
+		case 0:
+			jump(imediato);
+			printf("jump %d \n", imediato);
+			break;
+		case 1:
+			jump_cond(registradores[registrador], imediato);
+			printf("jump_cond r%d, %d \n", registrador, imediato);
+			if (registradores[registrador] == 0){
 			    pc++;
-		    }
-		    break;
-	    case 3:
-		    mov(registrador, imediato);
-		    printf("mov r%d, %d \n", registrador, imediato);
-		    break;
-	    default:
-		    printf("Erro I\n");
+			}
+			break;
+		case 3:
+			mov(registrador, imediato);
+			printf("mov r%d, %d \n", registrador, imediato);
+			break;
+		default:
+			printf("Erro I\n");
 	}
 }
 
