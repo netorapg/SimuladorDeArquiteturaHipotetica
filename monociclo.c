@@ -185,12 +185,12 @@ int main (int argc, char **argv) {
 
 	while (ligado != 0) {
 		instrucao = memoria[pc]; // Pega a instrução na memória
-		formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
-		executarInstrucoes(instrucao);
-		printarRegistradores();
-		printf("\n");
-        //getchar();
-		printarMemoria();
+        formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
+        executarInstrucoes(instrucao); // Executa a instrução
+		printarRegistradores(); // Printa os registradores
+		printf("\n"); // Pula uma linha
+        //getchar(); // Pausa a execução
+		printarMemoria(); // Printa a memória
 	}
 	return 0;
 }
