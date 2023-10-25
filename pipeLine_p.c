@@ -17,6 +17,8 @@ uint16_t registrador; // Extrai o registrador da instrução
 uint16_t imediato; // Extrai o imediato da instrução
 uint16_t formato; // Extrai o formato da instrução
 uint16_t instrucao; // Instrução
+uint16_t forcaBruta = 0; // Variável usada para forçar a execução de uma instrução
+int abc = 0;
 
 // Instruções de 16 bits
 uint16_t add(uint16_t a, uint16_t b) { // Instrução de adição
@@ -25,6 +27,7 @@ uint16_t add(uint16_t a, uint16_t b) { // Instrução de adição
 
 uint16_t sub(uint16_t a, uint16_t b) { // Instrução de subtração
 	return a-b;
+
 }
 
 uint16_t mul(uint16_t a, uint16_t b) { // Instrução de multiplicação
@@ -96,10 +99,7 @@ void printarMemoria() { // Printa a memória
 
 // Função que executa as instrucoes do tipo R
 void instrucaoR(uint16_t instrucao) {
-opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
-destino = extract_bits(instrucao, 6, 3); // Extrai o destino da instrução
-operador1 = extract_bits(instrucao, 3, 3); // Extrai o operador 1 da instrução
-operador2 = extract_bits(instrucao, 0, 3); // Extrai o operador 2 da instrução
+
 	switch (opcode) { // Executa a instrução de acordo com o opcode
 		case 0:
 			registradores[destino] = add(registradores[operador1], registradores[operador2]);
@@ -144,9 +144,7 @@ operador2 = extract_bits(instrucao, 0, 3); // Extrai o operador 2 da instrução
 
 // Função que executa as instrucoes do tipo I
 void instrucaoI(uint16_t instrucao) {
-opcode = extract_bits(instrucao, 13, 2); // Extrai o opcode da instrução
-registrador = extract_bits(instrucao, 10, 3); // Extrai o registrador da instrução
-imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
+
 	switch(opcode) {
 		case 0:
 			jump(imediato);
@@ -165,15 +163,32 @@ imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
 	}
 }
 
-void executarInstrucoes(uint16_t instrucao){
-    if(formato == 0) { // Se o formato for 0, a instrução é do tipo R
-		instrucaoR
-    (instrucao);
+void pegaInstrucaoNaMemoria(uint16_t pc){
+	instrucao = memoria[pc];
+}
+
+void pegaFormatoDaInstrucao(uint16_t instrucao){
+	formato = extract_bits(instrucao, 15, 1);
+	if (formato == 0){
+		opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
+		destino = extract_bits(instrucao, 6, 3); // Extrai o destino da instrução
+		operador1 = extract_bits(instrucao, 3, 3); // Extrai o operador 1 da instrução
+		operador2 = extract_bits(instrucao, 0, 3); // Extrai o operador 2 da instrução
+	} else {
+		opcode = extract_bits(instrucao, 13, 2); // Extrai o opcode da instrução
+		registrador = extract_bits(instrucao, 10, 3); // Extrai o registrador da instrução
+		imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
+	}
+}
+void executarInstrucoes(uint16_t instrucao) {
+	if(formato == 0) { // Se o formato for 0, a instrução é do tipo R
+		instrucaoR(instrucao);
         pc++;
 	} else { // Se o formato for 1, a instrução é do tipo I
 		instrucaoI(instrucao);
 	}
 }
+
 
 int main (int argc, char **argv) {
 	
@@ -185,9 +200,23 @@ int main (int argc, char **argv) {
 	load_binary_to_memory(argv[1], memoria, 64*1024);
 
 	while (ligado != 0) {
-		instrucao = memoria[pc]; // Pega a instrução na memória
-        formato = extract_bits(instrucao, 15, 1); // Extrai o bit de formato da instrução	
-        executarInstrucoes(instrucao); // Executa a instrução
+		if (forcaBruta == 0){
+			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+			forcaBruta++;
+			pc++;
+		}
+		else if (forcaBruta == 1){
+			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+			pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução
+			forcaBruta++;
+			pc++;
+		}
+		else if (forcaBruta == 2){
+			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+			pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução
+			executarInstrucoes(instrucao); // Executa a instrução
+		}
+		  
 		printarRegistradores(); // Printa os registradores
 		printf("\n"); // Pula uma linha
         //getchar(); // Pausa a execução
