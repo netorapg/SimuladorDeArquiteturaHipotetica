@@ -17,6 +17,7 @@ uint16_t registrador; // Extrai o registrador da instrução
 uint16_t imediato; // Extrai o imediato da instrução
 uint16_t formato; // Extrai o formato da instrução
 uint16_t instrucao; // Instrução
+uint16_t quantidade;
 
 // Instruções de 16 bits
 uint16_t add(uint16_t a, uint16_t b) { // Instrução de adição
@@ -187,10 +188,8 @@ void executarInstrucoes(uint16_t instrucao) {
 	} else { // Se o formato for 1, a instrução é do tipo I
 		instrucaoI(instrucao);
 	}
+	quantidade++;	
 }
-
-
-
 
 int main (int argc, char **argv) {
 	
@@ -209,6 +208,7 @@ int main (int argc, char **argv) {
 		printf("\n"); // Pula uma linha
         //getchar(); // Pausa a execução
 		printarMemoria(); // Printa a memória
+		printf("Quantidade de instruções executadas: %d\n", quantidade);
 	}
 	return 0;
 }
