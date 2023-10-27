@@ -17,6 +17,7 @@ uint16_t registrador; // Extrai o registrador da instrução
 uint16_t imediato; // Extrai o imediato da instrução
 uint16_t formato; // Extrai o formato da instrução
 uint16_t instrucao; // Instrução
+uint16_t forcaBruta = 0; // Variável usada para forçar a execução de uma instrução
 uint16_t quantidade;
 
 // Instruções de 16 bits
@@ -143,6 +144,7 @@ void instrucaoR(uint16_t instrucao) {
 
 // Função que executa as instrucoes do tipo I
 void instrucaoI(uint16_t instrucao) {
+
 	switch(opcode) {
 		case 0:
 			jump(imediato);
@@ -161,15 +163,14 @@ void instrucaoI(uint16_t instrucao) {
 	}
 }
 
-
-
-
 void pegaInstrucaoNaMemoria(uint16_t pc){
 	instrucao = memoria[pc];
+	printf("Busca\n");
 }
 
 void pegaFormatoDaInstrucao(uint16_t instrucao){
 	formato = extract_bits(instrucao, 15, 1);
+	printf("Decodifica\n");
 	if (formato == 0){
 		opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
 		destino = extract_bits(instrucao, 6, 3); // Extrai o destino da instrução
@@ -182,14 +183,16 @@ void pegaFormatoDaInstrucao(uint16_t instrucao){
 	}
 }
 void executarInstrucoes(uint16_t instrucao) {
+	printf("Executa\n");
 	if(formato == 0) { // Se o formato for 0, a instrução é do tipo R
 		instrucaoR(instrucao);
         pc++;
 	} else { // Se o formato for 1, a instrução é do tipo I
 		instrucaoI(instrucao);
 	}
-	quantidade++;	
+	quantidade++;
 }
+
 
 int main (int argc, char **argv) {
 	
@@ -201,12 +204,25 @@ int main (int argc, char **argv) {
 	load_binary_to_memory(argv[1], memoria, 64*1024);
 
 	while (ligado != 0) {
-		pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
-		pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução	
-        executarInstrucoes(instrucao); // Executa a instrução
+		if (forcaBruta == 0){
+			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+			pc++;
+		}
+		else if (forcaBruta == 1){
+			pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução
+			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+			pc++;
+		}
+		else if (forcaBruta == 2){
+			executarInstrucoes(instrucao); // Executa a instrução
+			pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução
+			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+			
+		}
+		forcaBruta++;
 		printarRegistradores(); // Printa os registradores
 		printf("\n"); // Pula uma linha
-        //getchar(); // Pausa a execução
+       	getchar(); // Pausa a execução
 		printarMemoria(); // Printa a memória
 		printf("Quantidade de instruções executadas: %d\n", quantidade);
 	}
