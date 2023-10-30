@@ -164,11 +164,11 @@ void instrucaoI(uint16_t instrucao) {
 
 
 
-void pegaInstrucaoNaMemoria(uint16_t pc){
+void busca(uint16_t pc){
 	instrucao = memoria[pc];
 }
 
-void pegaFormatoDaInstrucao(uint16_t instrucao){
+void decode(uint16_t instrucao){
 	formato = extract_bits(instrucao, 15, 1);
 	if (formato == 0){
 		opcode = extract_bits(instrucao, 9, 6); // Extrai o opcode da instrução
@@ -201,8 +201,8 @@ int main (int argc, char **argv) {
 	load_binary_to_memory(argv[1], memoria, 64*1024);
 
 	while (ligado != 0) {
-		pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
-		pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução	
+		busca(pc); // Pega a instrução na memória
+		decode(instrucao); // Pega o formato da instrução	
         executarInstrucoes(instrucao); // Executa a instrução
 		printarRegistradores(); // Printa os registradores
 		printf("\n"); // Pula uma linha

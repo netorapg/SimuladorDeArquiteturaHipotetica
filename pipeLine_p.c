@@ -17,7 +17,7 @@ uint16_t registrador; // Extrai o registrador da instrução
 uint16_t imediato; // Extrai o imediato da instrução
 uint16_t formato; // Extrai o formato da instrução
 uint16_t instrucao; // Instrução
-uint16_t forcaBruta = 0; // Variável usada para forçar a execução de uma instrução
+uint16_t contagem_ciclo = 0; // Variável usada para forçar a execução de uma instrução
 uint16_t quantidade;
 
 // Instruções de 16 bits
@@ -163,12 +163,12 @@ void instrucaoI(uint16_t instrucao) {
 	}
 }
 
-void pegaInstrucaoNaMemoria(uint16_t pc){
+void busca(uint16_t pc){
 	instrucao = memoria[pc];
 	printf("Busca\n");
 }
 
-void pegaFormatoDaInstrucao(uint16_t instrucao){
+void decode(uint16_t instrucao){
 	formato = extract_bits(instrucao, 15, 1);
 	printf("Decodifica\n");
 	if (formato == 0){
@@ -204,22 +204,22 @@ int main (int argc, char **argv) {
 	load_binary_to_memory(argv[1], memoria, 64*1024);
 
 	while (ligado != 0) {
-		if (forcaBruta == 0){
-			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+		if (contagem_ciclo == 0){
+			busca(pc); // Pega a instrução na memória
 			pc++;
 		}
-		else if (forcaBruta == 1){
-			pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução
-			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+		else if (contagem_ciclo == 1){
+			decode(instrucao); // Pega o formato da instrução
+			busca(pc); // Pega a instrução na memória
 			pc++;
 		}
-		else if (forcaBruta == 2){
+		else if (contagem_ciclo == 2){
 			executarInstrucoes(instrucao); // Executa a instrução
-			pegaFormatoDaInstrucao(instrucao); // Pega o formato da instrução
-			pegaInstrucaoNaMemoria(pc); // Pega a instrução na memória
+			decode(instrucao); // Pega o formato da instrução
+			busca(pc); // Pega a instrução na memória
 			
 		}
-		forcaBruta++;
+		contagem_ciclo++;
 		printarRegistradores(); // Printa os registradores
 		printf("\n"); // Pula uma linha
        	getchar(); // Pausa a execução
