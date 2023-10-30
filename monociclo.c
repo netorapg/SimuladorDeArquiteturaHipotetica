@@ -181,7 +181,7 @@ void decode(uint16_t instrucao){
 		imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
 	}
 }
-void executarInstrucoes(uint16_t instrucao) {
+void executar(uint16_t instrucao) {
 	if(formato == 0) { // Se o formato for 0, a instrução é do tipo R
 		instrucaoR(instrucao);
         pc++;
@@ -203,7 +203,7 @@ int main (int argc, char **argv) {
 	while (ligado != 0) {
 		busca(pc); // Pega a instrução na memória
 		decode(instrucao); // Pega o formato da instrução	
-        executarInstrucoes(instrucao); // Executa a instrução
+        executar(instrucao); // Executa a instrução
 		printarRegistradores(); // Printa os registradores
 		printf("\n"); // Pula uma linha
         //getchar(); // Pausa a execução

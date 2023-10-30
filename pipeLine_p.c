@@ -182,7 +182,7 @@ void decode(uint16_t instrucao){
 		imediato = extract_bits(instrucao, 0, 10); // Extrai o imediato da instrução
 	}
 }
-void executarInstrucoes(uint16_t instrucao) {
+void executar(uint16_t instrucao) {
 	printf("Executa\n");
 	if(formato == 0) { // Se o formato for 0, a instrução é do tipo R
 		instrucaoR(instrucao);
@@ -214,7 +214,7 @@ int main (int argc, char **argv) {
 			pc++;
 		}
 		else if (contagem_ciclo == 2){
-			executarInstrucoes(instrucao); // Executa a instrução
+			executar(instrucao); // Executa a instrução
 			decode(instrucao); // Pega o formato da instrução
 			busca(pc); // Pega a instrução na memória
 			
